@@ -69,12 +69,9 @@ export default function BasicCard() {
                 setError(false)
 
             }, 4000);
-
         }
-
     }
     // === Add New Task === //
-
     {/* Functions For Inputs and tasks */ }
     //  === Filteration Buttons === //
     const FinshedTasks = todos.filter((task) => { return task.isCompleted; })
