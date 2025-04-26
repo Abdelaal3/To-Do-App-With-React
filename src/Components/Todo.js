@@ -12,6 +12,11 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { useContext, useState } from 'react';
 import { TodoContext, InputsContext } from '../todosContext/TodoContext';
 import TextField from '@mui/material/TextField';
+
+// Snack Bar //
+import { useToast } from '../todosContext/SnackBarContext'
+
+
 // Dialog//
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -20,11 +25,22 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle'
 import Alert from '@mui/material/Alert';
 // Dialog//
-export default function Todo({ todo }) {
+
+
+
+export default function Todo({ todo, HandelDeleteFunction, handeleDeleteFunction }) {
+
+    // Snack Bar //
+
+    const { ShowHideSnack } = useToast()
+
+    // === Snack Bar === //
+
     const [showAlert, setShowAlert] = useState(false)
     const { todos, setTodos } = useContext(TodoContext)
     const { inputTitle, setinputTitle } = useContext(InputsContext)
     const [text, setText] = useState({ heading: '', body: '' });
+
     {/* Handles Click */ }
     let handleCheckClick = () => {
         const Updated = todos.map((t) => {
@@ -34,12 +50,19 @@ export default function Todo({ todo }) {
             return t
         })
         setTodos(Updated)
-        console.log(todos)
         localStorage.setItem('Tasks', JSON.stringify(Updated))
+
+        if (todo.isCompleted === true) {
+            ShowHideSnack('Task finished successfully.')
+
+        } else {
+            ShowHideSnack('Task not finished successfully.')
+
+        }
     }
 
     let handelDelete = () => {
-        handleClickOpen()
+        HandelDeleteFunction(todo)
     }
     let DeleteTask = () => {
         const DeletTask = todos.filter(task => (task.id != todo.id))
@@ -55,117 +78,24 @@ export default function Todo({ todo }) {
             setShowAlert(false)
         }, 8000)
     }
+
     let handelEdit = () => {
-        setText({ heading: todo.heading, body: todo.body });
-        setOpenEdit(true)
-        console.log(text.heading);
+        handeleDeleteFunction(todo)
     }
-    let UpdateTask = () => {
-        const updatedTodos = todos.map((t) => {
-            if (t.id === todo.id) {
-                return { ...t, heading: text.heading, body: text.body, date: text.date };
-            }
-            return t;
-        });
-        setTodos(updatedTodos)
-        setOpenEdit(false)
-        localStorage.setItem('Tasks', JSON.stringify(updatedTodos))
-    }
-    {/* === Handles Click === */ }
-    {/* Delete Modal State*/ }
+
+    /* === Handles Click === */
+    /* Delete Modal State*/
+
     const [open, setOpen] = useState(false);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-    {/* === Delete Modal State === */ }
-    {/* Edit Modal State*/ }
+
+    /* === Delete Modal State === */
+    /* Edit Modal State*/
     const [openEdit, setOpenEdit] = useState(false);
-    {/* === Edit Modal State === */ }
+    /* === Edit Modal State === */
     return (
         <>
-            {/* Delete Modal */}
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"Do You Want to delete this Task?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        This action is irreversible.
 
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant='contained' color='error' onClick={handleClose}>Disagree</Button>
-                    <Button variant='contained' color='success' onClick={DeleteTask} autoFocus> Agree</Button>
-                </DialogActions>
-            </Dialog>
-            {/* === Delete Modal === */}
-            {/*  Edit Modal  */}
-            <Dialog
-                open={openEdit}
-                onClose={() => { setOpenEdit(false) }}
 
-            >
-                <DialogTitle>Edit the task of: " {todo.heading} "</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-
-                    </DialogContentText>
-                    <TextField
-                        style={{ width: '400px' }}
-                        value={text.heading}
-                        onChange={(e) => {
-                            setText({ ...text, heading: e.target.value })
-                        }}
-                        label="The Title"
-                        fullWidth
-                        variant="standard"
-                        margin="dense"
-                        autoFocus
-                        type="text"
-                    />
-                    <TextField
-                        style={{ width: '400px' }}
-                        value={text.body}
-                        onChange={(e) => {
-                            setText({ ...text, body: e.target.value })
-                        }}
-                        label="Description"
-                        fullWidth
-                        variant="standard"
-                        margin="dense"
-                        autoFocus
-                        type="text"
-                    />
-
-                    <TextField
-                        style={{ width: '400px' }}
-                        value={text.date}
-                        onChange={(e) => {
-                            setText({ ...text, date: e.target.value })
-                        }}
-                        label="Date"
-                        fullWidth
-                        variant="standard"
-
-                        autoFocus
-                        type="date"
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button variant='contained' color='success' onClick={UpdateTask} type="submit">Update</Button>
-                    <Button variant='contained' color='error' onClick={() => { setOpenEdit(false) }}>Cancel</Button>
-                </DialogActions>
-            </Dialog>
-            {/* === Edit Modal === */}
             < Card className='TodoCard' sx={{ minWidth: 275, backgroundColor: '#b1d895f5', marginTop: 3, marginBottom: 3 }
             }>
                 <CardContent>

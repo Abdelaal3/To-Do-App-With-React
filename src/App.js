@@ -4,6 +4,9 @@ import './App.css';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 import TodoLists from './Components/TodoLists';
+import SnackBar from './Components/SnackBar';
+import { SnackBarContext, ToastProvider } from './todosContext/SnackBarContext';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -18,22 +21,37 @@ const theme = createTheme({
   },
 
 });
+
 function App() {
+
+
+
+
+
   return (
+
     <ThemeProvider theme={theme}>
-      <div className="App" style={{
-        display: "flex",
-        // flexDirection:'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        background: '#141614',
-        //overflowY: 'auto',
-        height: '100vh', // أضف دي 👇
-        width: '100%',
-        direction: 'ltr'
-      }} >
-        <TodoLists />
-      </div>
+
+      <ToastProvider >
+
+        <div className="App"
+          style={{
+            display: "flex",
+            // flexDirection:'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            background: '#141614',
+            //overflowY: 'auto',
+            height: '100vh', // أضف دي 👇
+            width: '100%',
+            direction: 'ltr'
+          }} >
+
+          <TodoLists />
+        </div>
+
+      </ToastProvider>
+
     </ThemeProvider>
   );
 }
