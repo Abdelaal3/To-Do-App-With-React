@@ -17,7 +17,7 @@ import { useContext, useState, useEffect, useMemo } from 'react';
 import { TodoContext, InputsContext } from '../todosContext/TodoContext';
 
 // Snack Bar //
-import {   useToast } from '../todosContext/SnackBarContext'
+import { useToast } from '../todosContext/SnackBarContext'
 
 // Components
 import Todo from './Todo';
