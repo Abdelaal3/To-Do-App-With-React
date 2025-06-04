@@ -16,3 +16,11 @@ A modern and responsive To-Do List application built using **React**. It allows 
 - LocalStorage API
 - `react-hot-toast` for notifications
 - MUI and CSS for styling
+
+🎯 What I Learned
+- How to manage global state using useContext
+- How to persist state with localStorage
+- Component reusability and separation of concerns
+- React hooks in real-world projects
+- Clean UI logic with filter systems
+- Showing dynamic feedback using react-hot-toast
